@@ -1,0 +1,75 @@
+<html>
+	<head>
+		<meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+		<link rel="stylesheet" type="text/css" href="styles.css" />
+		
+		<script>
+			
+			window.onload = function() {
+				const today = new Date();
+				const year = today.getFullYear(); // Local year
+				const month = String(today.getMonth() + 1).padStart(2, '0'); // Local month (0-based index, so add 1)
+				const day = String(today.getDate()).padStart(2, '0'); // Local day
+
+				// Format the date as YYYY-MM-DD
+				const localDate = `${year}-${month}-${day}`;
+				document.getElementById("date_select").value = localDate;
+			}
+			
+			function submitCalories() {
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.onreadystatechange = function() { 
+						if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+							setText(xmlHttp.responseText);
+				}
+				
+				xmlHttp.open("POST", "Server.sh", true);
+				xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div class="grid-parent">
+			<!-- HEADER -->
+			<div class="header">
+				<h2 style="text-align: center; margin-top: 40px;">Weight Tracking</h2>
+			</div>
+			
+			<div class="today">
+				<h3 style="text-align: center; margin-top: 40px; ">Current Stats</h3>
+				
+				<div class="calories_progress">
+					<label style="display:inline-block; margin-top:10%;">Calories Today:</label>
+					<br>
+
+					<meter style="width:60%;" id="calories" min="0" max="2100" value="0"></meter>
+					<br>
+					<h4>0/2100</h4>
+				</div>
+
+			</div>
+			
+			<div class="insert">
+				<h3 style="text-align: center; margin-top: 40px; grid-column: 1/13; grid-row: 1;">Insert</h2>
+				
+				<div class="form_eat">
+					<form id="form_eat" name="eat" action="Server.sh" method="post">
+						<input style="margin-top:20px;" type="date" id="date_select" name="date_eaten">
+						<input style="margin-top:20px;" size="4" type="text" id="calories_input" name="calories">
+						
+						<!-- Request type -->
+						<input name="request_type" type="hidden" value="insert_calories">
+					</form>
+					
+					<button onclick="document.getElementById('form_eat').submit()">Add</button>
+				</div>
+				
+				<div class="food_list">
+					
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
