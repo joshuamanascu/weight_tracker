@@ -1,9 +1,6 @@
 package weight_tracker_server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
@@ -12,6 +9,7 @@ import java.util.HashMap;
 
 public class Handle {
 	static String insertCalories = "INSERT INTO CALORIES (date, calories) VALUES (?, ?)";
+	static String getCalories = "SELECT COALESCE(SUM(calories), 0) FROM CALORIES WHERE date = ?";
 
 	public static void main(String[] args) throws SQLException {
 		
@@ -25,6 +23,9 @@ public class Handle {
 		if (in_map.get("request_type").equals("insert_calories")) {
 			httpResponse = addCalories(con, in_map.get("date_eaten"), Integer.valueOf(in_map.get("calories")));
 		}
+		else if(in_map.get("request_type").equals("get_calories")) {
+			httpResponse = getCalories(con, in_map.get("date_requested"));
+		}
 		else {
 			httpResponse = "Error";
 		}
@@ -33,6 +34,41 @@ public class Handle {
 		
         System.out.println(httpResponse);
 		
+	}
+	
+	public static String getCalories(Connection con, String date) {
+		String httpResponse = null;
+		
+		try {
+			PreparedStatement pstmt = con.prepareStatement(getCalories);
+
+	        // Set parameters for the prepared statement
+	        pstmt.setDate(1, Date.valueOf(date));    // Set the date
+
+	        // Execute the insert
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs != null) {
+	        	rs.next();
+	        	int calories = rs.getInt(1); //SQL columns - not zero indexed
+	        	
+	        	
+	        	httpResponse = 
+	                "Status: 200 OK\n" +
+	                "Content-Type: text/html\n\n" +
+	                calories;
+	        }
+	        else {
+	        	httpResponse = 
+	                "Status: 500 INTERNAL SERVER ERROR\n" +
+	                "Content-Type: text/html\n\n";
+	        }
+	        
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return httpResponse;
 	}
 	
 	public static String addCalories(Connection con, String date, int amount) {
