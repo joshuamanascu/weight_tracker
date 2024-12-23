@@ -32,7 +32,7 @@ public class Handle {
 		
 		
 		
-        System.out.println(httpResponse);
+        System.out.print(httpResponse);
 		
 	}
 	
