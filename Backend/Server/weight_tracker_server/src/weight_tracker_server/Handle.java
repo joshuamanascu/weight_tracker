@@ -14,11 +14,11 @@ public class Handle {
 	static String insertCalories = "INSERT INTO CALORIES (date, calories) VALUES (?, ?)";
 
 	public static void main(String[] args) throws SQLException {
-		Connection con = create_connection();
+		
+		Connection con = create_connection(args[1]);
+		
 		
 		HashMap<String, String> in_map = decodeInput(args[0]);
-		
-		
 		
 		String httpResponse;
 		
@@ -28,6 +28,8 @@ public class Handle {
 		else {
 			httpResponse = "Error";
 		}
+		
+		
 		
         System.out.println(httpResponse);
 		
@@ -50,14 +52,12 @@ public class Handle {
 	        if (rowsAffected != 0) {
 	        	httpResponse = 
 	                "Status: 200 OK\n" +
-	                "Content-Type: text/html\n\n" +
-	                "Calories submitted successfully!";
+	                "Content-Type: text/html\n\n";
 	        }
 	        else {
 	        	httpResponse = 
 	                "Status: 500 INTERNAL SERVER ERROR\n" +
-	                "Content-Type: text/html\n\n" +
-	                "Bad Database stuff";
+	                "Content-Type: text/html\n\n";
 	        }
 	        
 		} catch (SQLException e) {
@@ -82,18 +82,7 @@ public class Handle {
 		return out;
 	}
 	
-	public static Connection create_connection() {
-		
-		InputStream in = Handle.class.getResourceAsStream("/password.conf");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		
-		String pass = "";
-		try {
-			pass = reader.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static Connection create_connection(String pass) {
 		
 		try {
 			Connection con = DriverManager.getConnection("jdbc:postgresql:Weight", "postgres", pass);

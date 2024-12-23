@@ -2,3 +2,4 @@ postgresql-42.7.3.jar
 Server.jar
 Server.sh
 /.metadata/
+.env
