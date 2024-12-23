@@ -18,13 +18,37 @@
 			
 			function submitCalories() {
 				var xmlHttp = new XMLHttpRequest();
+				
+				const responseLabel = document.getElementById("response_label");
+				
 				xmlHttp.onreadystatechange = function() { 
-						if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-							setText(xmlHttp.responseText);
+					if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+						responseLabel.innerHTML = "Added successfully!"
+						responseLabel.style.display = "block";
+						
+						//Remove message after 5 seconds
+						setTimeout(function() {
+							responseLabel.style.display = "none";
+						}, 5000)
+						
+					}
+					else if (xmlHttp.readyState == 4 && xmlHttp.status == 500) {
+						responseLabel.innerHTML = "Error - Not added!"
+						responseLabel.style.display = "block";
+						
+						setTimeout(function() {
+							responseLabel.style.display = "none";
+						}, 5000)
+					}
+							
 				}
 				
 				xmlHttp.open("POST", "Server.sh", true);
-				xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				//xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				
+				
+				var formData = new FormData(document.getElementById("form_eat"));
+				xmlHttp.send(new URLSearchParams(formData))
 				
 				
 			}
@@ -55,7 +79,7 @@
 				<h3 style="text-align: center; margin-top: 40px; grid-column: 1/13; grid-row: 1;">Insert</h2>
 				
 				<div class="form_eat">
-					<form id="form_eat" name="eat" action="Server.sh" method="post">
+					<form id="form_eat" name="eat" action="" method="post">
 						<input style="margin-top:20px;" type="date" id="date_select" name="date_eaten">
 						<input style="margin-top:20px;" size="4" type="text" id="calories_input" name="calories">
 						
@@ -63,7 +87,9 @@
 						<input name="request_type" type="hidden" value="insert_calories">
 					</form>
 					
-					<button onclick="document.getElementById('form_eat').submit()">Add</button>
+					<button onclick="submitCalories()">Add</button>
+					<br><br>
+					<label id="response_label" style="color: green; display:none;">Added successfully!</label>
 				</div>
 				
 				<div class="food_list">

@@ -18,6 +18,8 @@ public class Handle {
 		
 		HashMap<String, String> in_map = decodeInput(args[0]);
 		
+		
+		
 		String httpResponse;
 		
 		if (in_map.get("request_type").equals("insert_calories")) {
