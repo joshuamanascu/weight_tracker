@@ -4,3 +4,4 @@ Server2.jar
 Server.sh
 /.metadata/
 .env
+weight_tracker_server
