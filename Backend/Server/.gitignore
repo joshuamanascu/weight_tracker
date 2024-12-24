@@ -5,3 +5,4 @@ Server.sh
 /.metadata/
 .env
 weight_tracker_server
+gson-2.11.0.jar

@@ -13,6 +13,8 @@ import java.util.HashMap;
 public class Handle {
     static String insertCalories = "INSERT INTO CALORIES (date, calories) VALUES (?, ?)";
     static String getCalories = "SELECT COALESCE(SUM(calories), 0) FROM CALORIES WHERE date = ?";
+    
+    static int responseCode;
 
     public static void main(String[] args) throws Exception {
         // Start an HTTP server on port 8000
@@ -25,7 +27,7 @@ public class Handle {
 
     private static void handleRequest(HttpExchange exchange) throws IOException {
         // Allow CORS for all origins
-        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*"); // Use specific IP if needed
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
 
@@ -34,6 +36,8 @@ public class Handle {
             exchange.sendResponseHeaders(204, -1); // No Content
             return;
         }
+        
+        responseCode = 200; //Assume OK unless something happens
 
         // Handle actual requests
         InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
@@ -55,16 +59,18 @@ public class Handle {
             } else if (in_map.get("request_type").equals("get_calories")) {
                 response = getCalories(con, in_map.get("date_requested"));
             } else {
+            	responseCode = 400;
                 response = "Error: Unknown request type";
             }
         } catch (Exception e) {
             e.printStackTrace();
+            responseCode = 500;
             response = "Error processing the request";
         }
 
         // Send response
         byte[] responseBytes = response.getBytes(StandardCharsets.UTF_8);
-        exchange.sendResponseHeaders(200, responseBytes.length);
+        exchange.sendResponseHeaders(responseCode, responseBytes.length);
         OutputStream os = exchange.getResponseBody();
         os.write(responseBytes);
         os.close();
@@ -90,7 +96,14 @@ public class Handle {
         pstmt.setInt(2, amount);
 
         int rowsAffected = pstmt.executeUpdate();
-        return rowsAffected > 0 ? "Calories added successfully!" : "Failed to add calories.";
+        if (rowsAffected > 0 ) {
+        	responseCode = 200;
+        	return "Calories added successfully!";
+        }
+        else {
+        	responseCode = 500;
+        	return "Failed to add calories.";
+        }
     }
 
     private static HashMap<String, String> decodeInput(String in) {
