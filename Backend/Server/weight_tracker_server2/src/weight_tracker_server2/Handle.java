@@ -29,11 +29,6 @@ public class Handle {
     }
 
     private static void handleRequest(HttpExchange exchange) throws IOException {
-        // Allow CORS for all origins
-        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
-        
         responseCode = 200; //Assume OK unless something happens
 
         // Handle actual requests

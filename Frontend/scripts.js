@@ -74,7 +74,7 @@ function getRecentEntries(number) {
 		}
 	}
 	
-	xmlHttp.open("POST", SERVER_URL + ":8000/weight", true);
+	xmlHttp.open("POST", "/api/weight", true);
 	const type = "get_recent_entries";
 	
 	const request = `request_type=${type}&num=${number}`;
@@ -97,7 +97,7 @@ function loadCalories(date) {
 		}
 	}
 	
-	xmlHttp.open("POST", SERVER_URL + ":8000/weight", true);
+	xmlHttp.open("POST", "/api/weight", true);
 	//xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	
 	const type = "get_calories";
@@ -141,7 +141,7 @@ function submitCalories() {
 				
 	}
 	
-	xmlHttp.open("POST", SERVER_URL + ":8000/weight", true);
+	xmlHttp.open("POST", "/api/weight", true);
 	//xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	
 	xmlHttp.overrideMimeType("text/html");
