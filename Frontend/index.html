@@ -1,3 +1,5 @@
+<!doctype html>
+
 <html>
 	<head>
 		<meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
@@ -26,6 +28,18 @@
 					<br>
 					<h4 id="calories_text">0/1800</h4>
 				</div>
+				
+				<div class="recent_entries">
+					<label style="display:inline-block; margin-top:10%;">Most Recent Entries:</label>
+					<table id="recent_entries_table" style="border: 1px solid black; margin-left: 25%; width: 50%;">
+						<tr>
+							<th>Date</th>
+							<th>Calories</th>
+							
+						</tr>
+					</table>
+				
+				</div>
 
 			</div>
 			
@@ -33,9 +47,9 @@
 				<h3 style="text-align: center; margin-top: 40px; grid-column: 1/13; grid-row: 1;">Insert</h2>
 				
 				<div class="form_eat">
-					<form id="form_eat" name="eat" action="" method="post">
+					<form id="form_eat" name="eat">
 						<input style="margin-top:20px;" type="date" id="date_select" name="date_eaten">
-						<input style="margin-top:20px;" size="4" type="text" id="calories_input" name="calories">
+						<input id="calories_input" style="margin-top:20px;" size="4" type="text" name="calories">
 						
 						<!-- Request type -->
 						<input name="request_type" type="hidden" value="insert_calories">

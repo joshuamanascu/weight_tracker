@@ -7,5 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="/home/joshua/Documents/Projects/Weight_tracker/Backend/Server/postgresql-42.7.3.jar"/>
+	<classpathentry kind="lib" path="/home/joshua/Documents/Projects/Weight_tracker/Backend/Server/gson-2.11.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

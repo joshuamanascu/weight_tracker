@@ -65,3 +65,8 @@ body, html {
 	vertical-align: center;
 }
 
+.recent_entries > table, th, td {
+  border:1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+}

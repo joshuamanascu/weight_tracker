@@ -1,6 +1,7 @@
 package weight_tracker_server2;
 
 import com.sun.net.httpserver.HttpServer;
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.*;
@@ -8,11 +9,13 @@ import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Handle {
     static String insertCalories = "INSERT INTO CALORIES (date, calories) VALUES (?, ?)";
     static String getCalories = "SELECT COALESCE(SUM(calories), 0) FROM CALORIES WHERE date = ?";
+    static String getRecentEntries = "SELECT date, calories FROM CALORIES ORDER BY date DESC LIMIT ?";
     
     static int responseCode;
 
@@ -30,12 +33,6 @@ public class Handle {
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
-
-        // Handle preflight (OPTIONS) requests
-        if (exchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
-            exchange.sendResponseHeaders(204, -1); // No Content
-            return;
-        }
         
         responseCode = 200; //Assume OK unless something happens
 
@@ -55,10 +52,15 @@ public class Handle {
         String response;
         try (Connection con = create_connection()) {
             if (in_map.get("request_type").equals("insert_calories")) {
-                response = addCalories(con, in_map.get("date_eaten"), Integer.parseInt(in_map.get("calories")));
-            } else if (in_map.get("request_type").equals("get_calories")) {
+                response = addCalories(con, in_map.get("date_eaten"), Integer.valueOf(in_map.get("calories")));
+            } 
+            else if (in_map.get("request_type").equals("get_calories")) {
                 response = getCalories(con, in_map.get("date_requested"));
-            } else {
+            } 
+            else if (in_map.get("request_type").equals("get_recent_entries")) {
+            	response = getRecentEntries(con, Integer.valueOf(in_map.get("num")));
+            }
+            else {
             	responseCode = 400;
                 response = "Error: Unknown request type";
             }
@@ -75,12 +77,37 @@ public class Handle {
         os.write(responseBytes);
         os.close();
     }
+    
+    public static String getRecentEntries(Connection Con, int num) throws SQLException {
+    	
+    	if (num > 10) {
+    		num = 10; //LIMIT TO TEN
+    	}
+    	
+    	PreparedStatement statement = Con.prepareStatement(getRecentEntries);
+    	statement.setInt(1, num);
+    	ResultSet rs = statement.executeQuery();
+    	
+    	Gson gson = new Gson();
+    	ArrayList<HashMap<String, String>> entries = new ArrayList<HashMap<String,String>>();
+    	
+    	while (rs.next()) {
+    		HashMap<String, String> map = new HashMap<String, String>();
+    		map.put("date", rs.getString("date"));
+    		map.put("calories", String.valueOf(rs.getInt("calories")));
+    		entries.add(map);
+    	}
+    	
+    	String json = gson.toJson(entries);
+    	return json;
+    	
+    }
 
 
     private static String getCalories(Connection con, String date) throws SQLException {
-        PreparedStatement pstmt = con.prepareStatement(getCalories);
-        pstmt.setDate(1, Date.valueOf(date));
-        ResultSet rs = pstmt.executeQuery();
+        PreparedStatement statement = con.prepareStatement(getCalories);
+        statement.setDate(1, Date.valueOf(date));
+        ResultSet rs = statement.executeQuery();
 
         if (rs.next()) {
             int calories = rs.getInt(1);
@@ -91,11 +118,11 @@ public class Handle {
     }
 
     private static String addCalories(Connection con, String date, int amount) throws SQLException {
-        PreparedStatement pstmt = con.prepareStatement(insertCalories);
-        pstmt.setDate(1, Date.valueOf(date));
-        pstmt.setInt(2, amount);
+        PreparedStatement statement = con.prepareStatement(insertCalories);
+        statement.setDate(1, Date.valueOf(date));
+        statement.setInt(2, amount);
 
-        int rowsAffected = pstmt.executeUpdate();
+        int rowsAffected = statement.executeUpdate();
         if (rowsAffected > 0 ) {
         	responseCode = 200;
         	return "Calories added successfully!";
