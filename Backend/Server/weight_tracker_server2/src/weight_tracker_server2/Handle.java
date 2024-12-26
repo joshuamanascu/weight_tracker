@@ -16,6 +16,7 @@ public class Handle {
     static String insertCalories = "INSERT INTO CALORIES (date, calories) VALUES (?, ?)";
     static String getCalories = "SELECT COALESCE(SUM(calories), 0) FROM CALORIES WHERE date = ?";
     static String getRecentEntries = "SELECT date, calories FROM CALORIES ORDER BY date DESC LIMIT ?";
+    static String getCurrentWeight = "SELECT weight FROM WEIGHT ORDER BY date DESC LIMIT 1";
     
     static int responseCode;
 
@@ -55,6 +56,9 @@ public class Handle {
             else if (in_map.get("request_type").equals("get_recent_entries")) {
             	response = getRecentEntries(con, Integer.valueOf(in_map.get("num")));
             }
+            else if (in_map.get("request_type").equals("get_weight")) {
+            	response = getCurrentWeight(con);
+            }
             else {
             	responseCode = 400;
                 response = "Error: Unknown request type";
@@ -73,13 +77,26 @@ public class Handle {
         os.close();
     }
     
-    public static String getRecentEntries(Connection Con, int num) throws SQLException {
+    public static String getCurrentWeight(Connection con) throws SQLException {
+    	PreparedStatement statement = con.prepareStatement(getCurrentWeight);
+    	ResultSet rs = statement.executeQuery();
+    	
+    	if (rs.next()) {
+    		int weight = rs.getInt(1);
+    		return String.valueOf(weight);
+    	}
+    	else {
+    		return "Error - No weight on file";
+    	}
+    }
+    
+    public static String getRecentEntries(Connection con, int num) throws SQLException {
     	
     	if (num > 10) {
     		num = 10; //LIMIT TO TEN
     	}
     	
-    	PreparedStatement statement = Con.prepareStatement(getRecentEntries);
+    	PreparedStatement statement = con.prepareStatement(getRecentEntries);
     	statement.setInt(1, num);
     	ResultSet rs = statement.executeQuery();
     	

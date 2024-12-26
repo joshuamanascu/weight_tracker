@@ -9,6 +9,8 @@ window.onload = function() {
 	
 	getRecentEntries(5);
 	
+	getCurrentWeight();
+	
 	//Enter listener for button
 	var calories_textBox = document.getElementById("calories_input");
 
@@ -33,6 +35,28 @@ function getCurrentDateString() {
 	const localDate = `${year}-${month}-${day}`;
 	
 	return localDate;
+}
+
+function getCurrentWeight() {
+	
+	const label = document.getElementById("weight_label");
+	
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = function() { 
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			var weight = xmlHttp.responseText;
+			
+			label.innerHTML = "Current Weight: " + weight;
+		}
+	}
+	
+	xmlHttp.open("POST", "/api/weight", true);
+	
+	const type = "get_weight";
+	const request = `request_type=${type}`;
+	
+	xmlHttp.overrideMimeType("text/html");
+	xmlHttp.send(request);
 }
 
 
