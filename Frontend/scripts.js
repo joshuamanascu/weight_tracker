@@ -2,14 +2,7 @@ const SERVER_URL = `${window.location.origin}`;
 
 window.onload = function() {
 	
-	localDate = getCurrentDateString();
-	document.getElementById("date_select").value = localDate;
-	
-	loadCalories(localDate);
-	
-	getRecentEntries(5);
-	
-	getCurrentWeight();
+	full_update();
 	
 	//Enter listener for button
 	var calories_textBox = document.getElementById("calories_input");
@@ -23,6 +16,19 @@ window.onload = function() {
 			submitCalories();
 		}
 	});
+	
+	setInterval(full_update, 600000); //10 minutes
+}
+
+function full_update() {
+	localDate = getCurrentDateString();
+	document.getElementById("date_select").value = localDate;
+	
+	loadCalories(localDate);
+	
+	getRecentEntries(5);
+	
+	getCurrentWeight();
 }
 
 function getCurrentDateString() {
