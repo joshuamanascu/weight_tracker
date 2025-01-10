@@ -19,8 +19,12 @@ public class Handle {
     static String getCurrentWeight = "SELECT weight FROM WEIGHT ORDER BY date DESC LIMIT 1";
     
     static int responseCode;
+    static Connection con;
 
     public static void main(String[] args) throws Exception {
+    	
+    	con = create_connection(); // Have the connection be a static global variable created once
+    	
         // Start an HTTP server on port 8000
     	HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 8000), 0);
         server.createContext("/weight", exchange -> handleRequest(exchange));
@@ -46,7 +50,7 @@ public class Handle {
         HashMap<String, String> in_map = decodeInput(requestBody.toString());
 
         String response;
-        try (Connection con = create_connection()) {
+        try {
             if (in_map.get("request_type").equals("insert_calories")) {
                 response = addCalories(con, in_map.get("date_eaten"), Integer.valueOf(in_map.get("calories")));
             } 
