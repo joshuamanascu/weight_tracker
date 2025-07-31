@@ -123,7 +123,7 @@ function loadCalories(date) {
 	xmlHttp.onreadystatechange = function() { 
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			progressBar.value = xmlHttp.responseText;
-			progressText.innerHTML = xmlHttp.responseText + "/1800";
+			progressText.innerHTML = xmlHttp.responseText + "/2100";
 		}
 	}
 	

@@ -20,6 +20,8 @@ public class Handle {
     
     static int responseCode;
     static Connection con;
+    
+    
 
     public static void main(String[] args) throws Exception {
     	
