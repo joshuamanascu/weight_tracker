@@ -35,6 +35,7 @@ public class DatabaseManager {
         // Read the password from the file
         try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
             password = br.readLine();
+            br.close();
         } catch (IOException e) {
             System.err.println("Failed to read the password file: " + e.getMessage());
             return null;
