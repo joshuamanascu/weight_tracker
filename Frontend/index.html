@@ -48,12 +48,16 @@
 			</div>
 			
 			<div class="insert">
-				<h3 style="text-align: center; margin-top: 40px; grid-column: 1/13; grid-row: 1;">Insert</h2>
+				<h3 style="text-align: center; margin-top: 40px; grid-column: 1/13; grid-row: 1;">Insert</h3>
 				
 				<div class="form_eat">
 					<form id="form_eat" name="eat">
-						<input style="margin-top:20px;" type="date" id="date_select" name="date_eaten">
-						<input id="calories_input" style="margin-top:20px;" size="4" type="text" name="calories">
+						
+						<div>
+							<label>Calories:</label>
+							<input style="margin-top:20px;" type="date" id="date_select_calories" name="date_eaten">
+							<input id="calories_input" style="margin-top:20px;" size="4" type="text" name="calories">
+						</div>
 						
 						<!-- Request type -->
 						<input name="request_type" type="hidden" value="insert_calories">
@@ -61,7 +65,25 @@
 					
 					<button onclick="submitCalories()">Add</button>
 					<br><br>
-					<label id="response_label" style="color: green; display:none;">Added successfully!</label>
+					<label id="response_label_calories" style="color: green; display:none;">Added successfully!</label>
+				</div>
+				
+				<div class="form_weight">
+					<form id="form_weight" name="weight">
+						
+						<div>
+							<label>Weight:</label>
+							<input style="margin-top:20px;" type="date" id="date_select_weight" name="date_eaten">
+							<input id="weight_input" style="margin-top:20px;" size="4" type="text" name="weight">
+						</div>
+						
+						<!-- Request type -->
+						<input name="request_type" type="hidden" value="insert_weight">
+					</form>
+					
+					<button onclick="submitWeight()">Add</button>
+					<br><br>
+					<label id="response_label_weight" style="color: green; display:none;">Added successfully!</label>
 				</div>
 				
 				<div class="food_list">

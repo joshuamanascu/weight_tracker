@@ -55,8 +55,17 @@ body, html {
 }
 
 .form_eat {
+
 	grid-column: 1 / 13;
 	grid-row: 2/3;
+	border: 1px solid black;
+	text-align: center;
+}
+
+.form_weight {
+
+	grid-column: 1 / 13;
+	grid-row: 4/5;
 	border: 1px solid black;
 	text-align: center;
 }

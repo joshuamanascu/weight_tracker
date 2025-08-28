@@ -22,7 +22,8 @@ window.onload = function() {
 
 function full_update() {
 	localDate = getCurrentDateString();
-	document.getElementById("date_select").value = localDate;
+	document.getElementById("date_select_calories").value = localDate;
+	document.getElementById("date_select_weight").value = localDate;
 	
 	loadCalories(localDate);
 	
@@ -142,7 +143,7 @@ function loadCalories(date) {
 function submitCalories() {
 	var xmlHttp = new XMLHttpRequest();
 	
-	const responseLabel = document.getElementById("response_label");
+	const responseLabel = document.getElementById("response_label_calories");
 	
 	xmlHttp.onreadystatechange = function() { 
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
