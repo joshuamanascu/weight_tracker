@@ -141,6 +141,15 @@ function loadCalories(date) {
 }
 
 function submitCalories() {
+
+	//Check for accidental submit on a different date
+	if (document.getElementById("date_select_calories").value != getCurrentDateString() ) {
+		
+		if (!confirm("You are submitting for a different date. Are you sure?")) {
+			return;
+		}
+	}
+
 	var xmlHttp = new XMLHttpRequest();
 	
 	const responseLabel = document.getElementById("response_label_calories");
