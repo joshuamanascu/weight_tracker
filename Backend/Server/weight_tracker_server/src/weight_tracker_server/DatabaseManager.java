@@ -1,4 +1,4 @@
-package weight_tracker_server2;
+package weight_tracker_server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
