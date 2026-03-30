@@ -1,6 +1,9 @@
 package weight_tracker_server;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,11 +32,11 @@ public class DatabaseManager {
     }
 
 	private static Connection create_connection() {
-    	InputStream in = DatabaseManager.class.getResourceAsStream("/password.conf");
         String password = null;
 
+        
         // Read the password from the file
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("password.conf"))) {
             password = br.readLine();
             br.close();
         } catch (IOException e) {
