@@ -87,6 +87,26 @@ function clearTable(table) {
     }
 }
 
+function deleteCalories(id) {
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = function() { 
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			full_update();
+		}
+		else if (xmlHttp.readyState == 4 && xmlHttp.status == 500) {
+			alert("Could not delete calories")
+		}
+	}
+	
+	xmlHttp.open("POST", "/api/weight", true);
+	const type = "delete_calories";
+	
+	const request = `request_type=${type}&id=${id}`;
+	
+	xmlHttp.overrideMimeType("text/html");
+	xmlHttp.send(request);
+}
+
 
 function getRecentEntries(number) {
 	
@@ -111,6 +131,10 @@ function getRecentEntries(number) {
 				var button = document.createElement("button");
 				button.innerHTML = "Delete";
 				button.value = entry.id;
+
+				button.addEventListener("click", function() {
+					if (window.confirm("Are you sure you want to delete this entry?")) deleteCalories(button.value);
+				});
 
 
 				row.insertCell().appendChild(button);

@@ -61,6 +61,12 @@ public class WeightTracker {
             else if (in_map.get("request_type").equals("get_weight")) {
             	response = DBManager.getCurrentWeight();
             }
+            else if (in_map.get("request_type").equals("delete_calories")) {
+            	responseCode = DBManager.deleteCalories(Integer.valueOf(in_map.get("id")));
+            	
+            	if (responseCode == 200) response = "Calories deleted successfully!";
+                else response = "Failed to delete calories.";
+            }
             else {
             	responseCode = 400;
                 response = "Error: Unknown request type";

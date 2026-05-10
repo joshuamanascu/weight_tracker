@@ -20,6 +20,7 @@ public class DatabaseManager {
 	private static String getCalories = "SELECT COALESCE(SUM(calories), 0) FROM CALORIES WHERE date = ?";
 	private static String getRecentEntries = "SELECT date, calories, id FROM CALORIES ORDER BY date DESC LIMIT ?";
 	private static String getCurrentWeight = "SELECT weight FROM WEIGHT ORDER BY date DESC LIMIT 1";
+	private static String deleteCalories = "DELETE FROM CALORIES WHERE id = ?";
 	
 	public Connection con;
 	
@@ -116,6 +117,19 @@ public class DatabaseManager {
         else {
         	return 500; //Failed to add calories.
         }
+    }
+    
+    public int deleteCalories(int id) throws SQLException {
+    	PreparedStatement statement = con.prepareStatement(deleteCalories);
+    	statement.setInt(1, id);
+    	
+    	 int rowsAffected = statement.executeUpdate();
+    	 if (rowsAffected > 0 ) {
+         	return 200; //Calories removed successfully!
+         }
+         else {
+         	return 500; //Failed to remove calories.
+         }
     }
 
 }
