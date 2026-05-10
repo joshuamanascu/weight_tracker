@@ -18,7 +18,7 @@ public class DatabaseManager {
 	
 	private static String insertCalories = "INSERT INTO CALORIES (date, calories) VALUES (?, ?)";
 	private static String getCalories = "SELECT COALESCE(SUM(calories), 0) FROM CALORIES WHERE date = ?";
-	private static String getRecentEntries = "SELECT date, calories FROM CALORIES ORDER BY date DESC LIMIT ?";
+	private static String getRecentEntries = "SELECT date, calories, id FROM CALORIES ORDER BY date DESC LIMIT ?";
 	private static String getCurrentWeight = "SELECT weight FROM WEIGHT ORDER BY date DESC LIMIT 1";
 	
 	public Connection con;
@@ -79,7 +79,9 @@ public class DatabaseManager {
     	while (rs.next()) {
     		HashMap<String, String> map = new HashMap<String, String>();
     		map.put("date", rs.getString("date"));
-    		map.put("calories", String.valueOf(rs.getInt("calories")));
+    		map.put("calories", String.valueOf(rs.getInt("calories")));		
+    		//Add ID for delete
+    		map.put("id", String.valueOf(rs.getInt("id")));
     		entries.add(map);
     	}
     	

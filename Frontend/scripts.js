@@ -101,13 +101,19 @@ function getRecentEntries(number) {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			var data = JSON.parse(xmlHttp.responseText);
 
-			console.log(newTable);
-
 			data.forEach(function(entry) {
 				var row = newTable.insertRow();
 				
 				row.insertCell().innerHTML = entry.date;
 				row.insertCell().innerHTML = entry.calories;
+
+				//Create delete button with ID
+				var button = document.createElement("button");
+				button.innerHTML = "Delete";
+				button.value = entry.id;
+
+
+				row.insertCell().appendChild(button);
 			});
 
 			//Replace table
