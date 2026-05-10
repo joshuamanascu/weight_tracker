@@ -70,10 +70,8 @@ function getCurrentWeight() {
 	xmlHttp.send(request);
 }
 
-
-function clearTable(tableId) {
-    // Get the table element by its ID
-    const table = document.getElementById(tableId);
+//Table element is passed to function
+function clearTable(table) {
     
     // Loop through the rows in reverse order (to avoid re-indexing issues)
     for (let i = table.rows.length - 1; i >= 0; i--) {
@@ -92,20 +90,29 @@ function clearTable(tableId) {
 
 function getRecentEntries(number) {
 	
-	const table = document.getElementById("recent_entries_table");
-	clearTable("recent_entries_table");
+	//Clone current table into new table and clear its rows
+	var table = document.getElementById("recent_entries_table");
+	const newTable = table.cloneNode(true);
+	clearTable(newTable);
+
 	
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() { 
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			var arr = JSON.parse(xmlHttp.responseText);
-			
-			arr.forEach(function(entry) {
-				var row = table.insertRow();
+			var data = JSON.parse(xmlHttp.responseText);
+
+			console.log(newTable);
+
+			data.forEach(function(entry) {
+				var row = newTable.insertRow();
 				
 				row.insertCell().innerHTML = entry.date;
 				row.insertCell().innerHTML = entry.calories;
 			});
+
+			//Replace table
+			table.replaceWith(newTable);
+			table = null;
 		}
 	}
 	
