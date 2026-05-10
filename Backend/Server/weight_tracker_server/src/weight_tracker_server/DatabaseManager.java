@@ -18,7 +18,7 @@ public class DatabaseManager {
 	
 	private static String insertCalories = "INSERT INTO CALORIES (date, calories) VALUES (?, ?)";
 	private static String getCalories = "SELECT COALESCE(SUM(calories), 0) FROM CALORIES WHERE date = ?";
-	private static String getRecentEntries = "SELECT date, calories, id FROM CALORIES ORDER BY date DESC LIMIT ?";
+	private static String getRecentEntries = "SELECT date, calories, id FROM CALORIES ORDER BY date DESC, id DESC LIMIT ?";
 	private static String getCurrentWeight = "SELECT weight FROM WEIGHT ORDER BY date DESC LIMIT 1";
 	private static String deleteCalories = "DELETE FROM CALORIES WHERE id = ?";
 	
