@@ -77,18 +77,33 @@ body, html {
 }
 
 
-.recent_entries > table, th, td {
-	border:1px solid black;
-	border-collapse: collapse;
-	text-align: center;
-	table-layout:fixed;
-	word-wrap:break-word
-  
+.recent_entries table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
 }
 
-.current_weight {
-	margin-top: 25%;
+.recent_entries th,
+.recent_entries td {
+    border: 1px solid black;
+    word-wrap: break-word;
+    padding: 0;
+
+	text-align: center;
+    vertical-align: middle;
+	
 }
+
+.recent_entries button {
+    display: block;
+    width: 80%;
+    height: 80%;
+    padding: 0;
+    
+
+	margin: auto;
+}
+
 
 /* Phone SIZE */
 
