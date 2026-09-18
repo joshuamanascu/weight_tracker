@@ -56,10 +56,40 @@ body, html {
 
 .form_eat {
 
+	display: grid;
+	grid-template-rows: repeat(3, 1fr);
+	grid-template-columns: repeat(5, 1fr);
+
 	grid-column: 1 / 13;
 	grid-row: 2/3;
 	border: 1px solid black;
 	text-align: center;
+}
+
+.form_eat > button {
+	grid-column: 3 / 4;
+	grid-row: 2/3;
+
+	width: 25%;
+    height: 50%;
+    justify-self: center;
+    align-self: center;
+}
+
+.form_eat > label {
+	grid-column: 3 / 4;
+	grid-row: 3/4;
+
+	justify-self: center;
+    align-self: center;
+}
+
+.calories_adder {
+	grid-column: 3/ 4;
+	grid-row: 1/2;
+
+	justify-self: center;
+    align-self: center;
 }
 
 .form_weight {
