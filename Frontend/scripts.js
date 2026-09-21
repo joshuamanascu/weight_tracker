@@ -231,3 +231,17 @@ function submitCalories() {
 	
 	
 }
+
+
+function fill_quota() {
+
+	const progressBar = document.getElementById("calories_bar");
+	date = document.getElementById("date_select_calories").value;
+
+	loadCalories(date);
+
+	amount = 2100 - progressBar.value;
+
+	document.getElementById("calories_input").value = amount;
+
+}
